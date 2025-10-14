@@ -1,0 +1,27 @@
+ARRIVAL: A new packet arrives
+DEPARTURE: A packet finishes service
+OBSERVER: Look at the system to measure performance
+
+METRICS
+-> How many packets are in the system (E[N])
+-> How often the system is idle (PIDLE)
+-> How often packets are dropped (PLOSS)
+
+Store all events in a list, sorted by event time
+Generate arrival and observer events before the simulation starts (lamda and mu) (exponential distribution from part 1)
+Observer is 3x Arrival
+
+Add events to list in sorted order
+
+Loop
+-> Remove first event
+-> Calculate how long event took
+-> Run time if queue has nothing in it
+-> If Arrival -> Increase Na and Queue Length, Schedule Departure If Queue Empty
+-> Else If Departure -> Increase Na and Decrease Queue Length, Schedule Departure If Queue > 0
+-> Else if -> Increase No and Add Queue Length to Sum
+-> Free the queue
+
+Results
+-> Calculate En
+-> Calculate PIDLE
