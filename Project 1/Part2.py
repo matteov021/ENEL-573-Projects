@@ -29,11 +29,8 @@ for rho in rho_list:
     mu = C / L
 
     # Initialize simulation parameters, queues and metrics
-    current_time = 0
-    departure_time = 0
     queue_sum = 0
     server_idle = 0
-    queue_length = 0
     Na = 0
     Nd = 0
     No = 0
@@ -65,8 +62,8 @@ for rho in rho_list:
             departure_list.append(arrival_list[i] + generate_service_time(mu))  
 
     # Push departure times to event list
-    for departure_time in departure_list:
-        heapq.heappush(event_list, (departure_time, "DEPARTURE"))
+    for i in departure_list:
+        heapq.heappush(event_list, (i, "DEPARTURE"))
 
     # Generate observer events
     time = 0
@@ -79,7 +76,7 @@ for rho in rho_list:
     while (event_list):
 
         # Grab next packet
-        current_time, event = heapq.heappop(event_list)
+        _, event = heapq.heappop(event_list)
 
         # Arrival Event
         if (event == "ARRIVAL"):
