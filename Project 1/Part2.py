@@ -27,7 +27,6 @@ for rho in rho_list:
     lamda = rho * C / L
     alpha = 3 * lamda
     mu = C / L
-    # rho = lamda / mu
 
     # Initialize simulation parameters, queues and metrics
     current_time = 0
@@ -39,19 +38,35 @@ for rho in rho_list:
     Nd = 0
     No = 0
     event_list = []
+    arrival_list = []
+    departure_list = []
 
     # Schedule departure using random exponential generator
-    def schedule_departure(current_time, mu):
+    def generate_service_time(mu):
         U = np.random.uniform(0, 1)
         service_time = -np.log(1-U) / mu
-        return current_time + service_time
+        return service_time
 
     # Generate arrival events
     time = 0
     while (time < T):
         U = np.random.uniform(0, 1)
         time += -np.log(1-U) / lamda
+        arrival_list.append(time)
         heapq.heappush(event_list, (time, "ARRIVAL"))
+
+    # Generate departure events
+    for i in range(len(arrival_list)):
+        if(i == 0):
+            departure_list.append(arrival_list[i] + generate_service_time(mu))
+        elif(departure_list[i-1] > arrival_list[i]):
+            departure_list.append(departure_list[i-1] + generate_service_time(mu))
+        elif(departure_list[i-1] <= arrival_list[i]):
+            departure_list.append(arrival_list[i] + generate_service_time(mu))  
+
+    # Push departure times to event list
+    for departure_time in departure_list:
+        heapq.heappush(event_list, (departure_time, "DEPARTURE"))
 
     # Generate observer events
     time = 0
@@ -62,40 +77,28 @@ for rho in rho_list:
 
     # Simulation
     while (event_list):
-        
+
         # Grab next packet
         current_time, event = heapq.heappop(event_list)
 
         # Arrival Event
         if (event == "ARRIVAL"):
             Na += 1
-            
-            # If idle, schedule a departure. Else, packet joins the queue and waits
-            if (current_time >= departure_time):
-                departure_time = schedule_departure(current_time, mu)
-                heapq.heappush(event_list, (departure_time, "DEPARTURE"))
-            else:
-                queue_length += 1
 
         # Departure Event
         elif (event == "DEPARTURE"):
             Nd += 1
-            
-            # If there are packets in the queue, schedule departure of the next packet. Else, set to idle
-            if (queue_length > 0):
-                queue_length -= 1
-                departure_time = schedule_departure(current_time, mu)
-                heapq.heappush(event_list, (departure_time, "DEPARTURE"))
-            else:
-                departure_time = current_time
-
+        
         # Observer Event
         elif (event == "OBSERVER"):
             No += 1
-            queue_sum += queue_length
+
+            # If something is in the system
+            if(Na - Nd > 0):
+                queue_sum += Na - Nd - 1
 
             # If server is not busy, increment idle counter
-            if (current_time >= departure_time):
+            if (Na - Nd == 0):
                 queue_idle += 1
 
     # Calculate metrics
