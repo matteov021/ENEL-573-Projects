@@ -10,7 +10,8 @@ df_metrics = pd.read_csv("queue_metrics.csv")
 plt.figure(figsize = (10, 6))
 
 # Plot Rho vs E[N]
-plt.bar(df_metrics["rho"], df_metrics[" E[N]"], label = "Averge Number Of Packets In Queue E[N]", width = 0.05)
+plt.bar(df_metrics["rho"] - 0.015 / 2, df_metrics[" Simulated E[N]"], label = "Simulated Averge Number Of Packets In Queue E[N]", width = 0.05)
+plt.bar(df_metrics["rho"] + 0.015 / 2, df_metrics[" Theoretical E[N]"], label = "Theoretical Averge Number Of Packets In Queue E[N]", width = 0.05)
 
 # Assign labels and other options for the plot
 plt.xlabel("Queue Utilization (ρ)")
@@ -27,8 +28,9 @@ plt.show()
 # Setup Figure
 plt.figure(figsize = (10, 6))
 
-# Plot Rho vs E[N]
-plt.bar(df_metrics["rho"], df_metrics[" P_IDLE"], label = "Proportion Of Time Server Is Idle P_IDLE", width = 0.05)
+# Plot Rho vs P_IDLE
+plt.bar(df_metrics["rho"] - 0.015 / 2, df_metrics[" Simulated P_IDLE"], label = "Simulated Proportion Of Time Server Is Idle P_IDLE", width = 0.05)
+plt.bar(df_metrics["rho"] + 0.015 / 2, df_metrics[" Theoretical P_IDLE"], label = "Theoretical Proportion Of Time Server Is Idle P_IDLE", width = 0.05)
 
 # Assign labels and other options for the plot
 plt.xlabel("Queue Utilization (ρ)")

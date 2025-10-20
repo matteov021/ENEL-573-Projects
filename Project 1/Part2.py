@@ -10,7 +10,7 @@ import numpy as np
 
 # Output File
 with open("queue_metrics.csv", "w") as f:
-    f.write("rho, E[N], P_IDLE\n")
+    f.write("rho, Simulated E[N], Theoretical E[N], Simulated P_IDLE, Theoretical P_IDLE\n")
 
 # Initialize parameters for queue
 L = 12000
@@ -27,6 +27,8 @@ for rho in rho_list:
     lamda = rho * C / L
     alpha = 3 * lamda
     mu = C / L
+    theoretical_E_N = rho**2 / (1 - rho)
+    theoretical_P_IDLE = 1 - rho
 
     # Initialize simulation parameters, queues and metrics
     queue_sum = 0
@@ -105,7 +107,7 @@ for rho in rho_list:
 
     # Write metrics to file
     with open("queue_metrics.csv", "a") as f:
-        f.write(f"{rho},{E_N},{P_IDLE}\n")
+        f.write(f"{rho},{E_N},{theoretical_E_N}, {P_IDLE}, {theoretical_P_IDLE}\n")
 
     # Print simulation results
     print(f"Simulation Time: {T}s")
