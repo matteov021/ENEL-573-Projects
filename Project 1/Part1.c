@@ -34,7 +34,7 @@ int main(void){
     // Extend our range a bit here so we avoid ln(0)
     for(int i = 0; i < N; i++){
         double U = ((double)rand() + 1.0) / ((double)RAND_MAX + 2.0);
-        samples[i] = -log(U) / lambda;
+        samples[i] = -log(1-U) / lambda;
         sum += samples[i];
     }
 
