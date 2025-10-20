@@ -32,7 +32,7 @@ for rho in rho_list:
     current_time = 0
     departure_time = 0
     queue_sum = 0
-    queue_idle = 0
+    server_idle = 0
     queue_length = 0
     Na = 0
     Nd = 0
@@ -99,11 +99,11 @@ for rho in rho_list:
 
             # If server is not busy, increment idle counter
             if (Na - Nd == 0):
-                queue_idle += 1
+                server_idle += 1
 
     # Calculate metrics
     E_N = queue_sum / No
-    P_IDLE = queue_idle / No
+    P_IDLE = server_idle / No
     P_LOSS = 0
 
     # Write metrics to file
