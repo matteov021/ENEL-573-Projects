@@ -262,11 +262,11 @@ if __name__ == "__main__":
     df_500ms = pd.DataFrame(results_500ms, columns = columns)
 
     # Print 10ms table
-    print("\nThroughput Results (bps) for 2τ = 10ms:")
+    print(f"\nThroughput Results (bps) With {Num_received_frames} Frames For 2τ = 10ms:")
     print("---------------------------------------------------------------")
     print(df_10ms.to_string(index = False, float_format = lambda x: f"{x:.2f}", col_space = 15))
 
     # Print 500ms table
-    print("\nThroughput Results (bps) for 2τ = 500ms:")
+    print(f"\nThroughput Results (bps) With {Num_received_frames} Frames For 2τ = 500ms:")
     print("---------------------------------------------------------------")
     print(df_500ms.to_string(index = False, float_format = lambda x: f"{x:.2f}", col_space = 15))
